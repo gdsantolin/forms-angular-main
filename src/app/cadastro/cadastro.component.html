@@ -1,54 +1,144 @@
 <main class="principal">
   <h2 class="principal__titulo">Dados do cadastro</h2>
 
-  <form class="principal__formulario" id="formulario">
+  <form class="principal__formulario" id="formulario" #f="ngForm" (ngSubmit)="cadastrar(f)">
     <h3 class="principal__subtitulo">Dados pessoais</h3>
+
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="nome">Nome Completo</label>
-      <input name="nome" id="nome" class="campo__escrita">
+      <input 
+        name="nome" 
+        id="nome" 
+        class="campo__escrita"
+        ngModel 
+        required 
+        minlength="3"
+        #nome="ngModel"
+      >
+      <div *ngIf="nome?.invalid && nome?.touched || nome?.dirty">
+        <app-mensagem 
+          *ngIf="nome?.errors?.['required']" 
+          mensagem="O nome deve ser preenchido."></app-mensagem>
+        <app-mensagem 
+          *ngIf="nome?.errors?.['minlength']" 
+          mensagem="O campo de nome deve ter no mínimo 3 caracteres."></app-mensagem>
+      </div>
     </div>
+
     <div class="formulario__dupla">
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="nascimento">Nascimento</label>
-        <input name="nascimento" id="nascimento" type="date" class="campo__escrita"/>
+        <input 
+          name="nascimento" 
+          id="nascimento" 
+          type="date" 
+          class="campo__escrita" 
+          ngModel
+          required
+          maiorIdadeValidator
+          #nascimento="ngModel"
+        />
+        <div *ngIf="nascimento?.invalid && nascimento?.touched">
+          <app-mensagem 
+            *ngIf="nascimento?.errors?.['required']" 
+            mensagem="A data deve ser preenchida."></app-mensagem>
+          <app-mensagem 
+            *ngIf="nascimento?.errors?.['maiorIdadeValidator']" 
+            mensagem=" O usuário deve ter 18 anos ou mais."></app-mensagem>
+        </div>
       </div>
+
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="telefone">Contato</label>
-        <input name="telefone" id="telefone" type="tel" placeholder="(XX) XXXXX-XXXX" class="campo__escrita"/>
+        <input 
+          name="telefone" 
+          id="telefone" 
+          type="tel" 
+          placeholder="(XX) XXXXX-XXXX" 
+          class="campo__escrita"
+          ngModel 
+          required 
+          pattern="(\(?\d{2}\)?\s?)(\d{5}\-?\d{4})"
+          #telefone="ngModel"
+        />
+        <div *ngIf="telefone?.invalid && telefone?.touched || telefone?.dirty">
+          <app-mensagem 
+            *ngIf="telefone?.errors?.['required']" 
+            mensagem="O telefone deve ser preenchido."></app-mensagem>
+          <app-mensagem 
+            *ngIf="telefone?.errors?.['pattern']" 
+            mensagem="O telefone deve ser válido."></app-mensagem>
+        </div>
       </div>
     </div>
+
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="email">E-mail</label>
-      <input name="email" id="email" type="email" class="campo__escrita"/>
+      <input
+        name="email" 
+        id="email"
+        type="email" 
+        class="campo__escrita"
+        ngModel 
+        required 
+        pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+        #email="ngModel"
+      />
+      <div *ngIf="email?.invalid && email?.touched || email?.dirty">
+        <app-mensagem 
+            *ngIf="email?.errors?.['required']" 
+            mensagem="O e-mail deve ser preenchido."></app-mensagem>
+          <app-mensagem 
+            *ngIf="email?.errors?.['pattern']" 
+            mensagem="O e-mail deve ser válido."></app-mensagem>
+      </div>
     </div>
-
-
+    
     <h3 class="principal__subtitulo">Endereço</h3>
 
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="cep">CEP</label>
-      <input name="cep" id="cep" class="campo__escrita" />
-      <div id="erro"></div>
+      <input 
+        name="cep" 
+        id="cep" 
+        class="campo__escrita"
+        ngModel 
+        required
+        #cep="ngModel"
+        pattern="^(\d{5})(-?\d{3})$" minlength="8" maxlength="9"
+      />
+      <div *ngIf="cep?.invalid && cep?.touched || cep?.dirty">
+        <app-mensagem 
+            *ngIf="cep?.errors?.['required']" 
+            mensagem="O CEP deve ser preenchido."></app-mensagem>
+          <app-mensagem 
+            *ngIf="cep?.errors?.['pattern']" 
+            mensagem="O CEP deve ser válido."></app-mensagem>
+      </div>
     </div>
 
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="endereco">Endereço</label>
       <input name="endereco" id="endereco" class="campo__escrita" />
     </div>
+
     <div class="formulario__dupla">
       <div class="formulario__campo">
-        <label class="campo__etiqueta" for="numero">Numero</label>
+        <label class="campo__etiqueta" for="numero">Número</label>
         <input name="numero" id="numero" class="campo__escrita" />
       </div>
+
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="complemento">Complemento</label>
         <input name="complemento" id="complemento" class="campo__escrita" />
       </div>
     </div>
+
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="bairro">Bairro</label>
       <input name="bairro" id="bairro" class="campo__escrita" />
     </div>
+
     <div class="formulario__dupla">
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="cidade">Cidade</label>
@@ -88,8 +178,8 @@
           <option value="EX">Estrangeiro</option>
         </select>
       </div>
-
     </div>
+
     <button type="submit" class="formulario__botao">Enviar formulário</button>
     </form>
 </main>
